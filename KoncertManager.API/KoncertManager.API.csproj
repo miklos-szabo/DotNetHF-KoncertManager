@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\KoncertManager.DAL1\KoncertManager.DAL.csproj" />
+    <ProjectReference Include="..\KoncertManager.DAL\KoncertManager.DAL.csproj" />
   </ItemGroup>
 
 
