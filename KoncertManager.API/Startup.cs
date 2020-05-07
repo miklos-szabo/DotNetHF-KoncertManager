@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using KoncertManager.BLL;
+using KoncertManager.BLL.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +30,16 @@ namespace KoncertManager.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            //A string az appsettings.Development.json fájlban van
             services.AddDbContext<ConcertManagerContext>(o =>
                 o.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+
+            //A Startup osztályunk szerelvényében keresi a profilt a mapperhez
+            services.AddAutoMapper(typeof(Startup));
+
+            //Megadjuk az elemeink kiszolgálóinak az interface-ét, és ezek az implementálását
+            services.AddTransient<IBandService, BandService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,10 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KoncertManager.API", "KoncertManager.API\KoncertManager.API.csproj", "{919AF5F2-4776-40A2-8FA5-D7E12D902F10}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1764017-FE6D-4E2C-B7FB-DD39E7ECD7C5} = {D1764017-FE6D-4E2C-B7FB-DD39E7ECD7C5}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFClient", "WPFClient\WPFClient.csproj", "{8DF612FF-1C78-431E-9E7A-DEB3DBC1D563}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KoncertManager.BLL", "KoncertManager.BLL\KoncertManager.BLL.csproj", "{D1764017-FE6D-4E2C-B7FB-DD39E7ECD7C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KoncertManager.BLL", "KoncertManager.BLL\KoncertManager.BLL.csproj", "{D1764017-FE6D-4E2C-B7FB-DD39E7ECD7C5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KoncertManager.DAL", "KoncertManager.DAL\KoncertManager.DAL.csproj", "{BF30E081-9F45-4707-A9BE-C2D58413465F}"
 EndProject
