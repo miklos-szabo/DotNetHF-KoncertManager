@@ -22,7 +22,7 @@ namespace KoncertManager.BLL
         public async Task<Band> GetBandAsync(int bandId)
         {
             return await _context.Bands.SingleOrDefaultAsync(b => b.Id == bandId) 
-                   ?? throw new EntityNotFoundException("Nem található az együttes!");
+                   ?? throw new EntityNotFoundException($"Nem található Id={bandId} együttes!");
         }
 
         public async Task<IEnumerable<Band>> GetBandsAsync()
@@ -49,7 +49,7 @@ namespace KoncertManager.BLL
             catch (DbUpdateConcurrencyException)
             {
                 if(await _context.Bands.SingleOrDefaultAsync(b => b.Id == bandId) == null)
-                    throw new EntityNotFoundException("Nem található az együttes!");
+                    throw new EntityNotFoundException($"Nem található Id={bandId} együttes!");
                 throw;
             }
         }

@@ -32,7 +32,7 @@ namespace KoncertManager.API.Controllers
         }
 
         // GET: api/Bands/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}", Name = "GetBand")]
         public async Task<Band> Get(int id)
         {
             //Lekérjük az elemet, és a DAL elemből DTO-t csinálunk
@@ -41,7 +41,7 @@ namespace KoncertManager.API.Controllers
 
         // POST: api/Bands
         [HttpPost]
-        public async Task<ActionResult<Band>> Post([FromBody] Band band)
+        public async Task<ActionResult<Band>> PostAsync([FromBody] Band band)
         {
             //Az együttes DTO elemből DAL elemet csinálunk, és beillesztjük az adatbázisba
             var created = await _bandService.InsertBandAsync(_mapper.Map<DAL.Entities.Band>(band));
@@ -55,7 +55,7 @@ namespace KoncertManager.API.Controllers
 
         // PUT: api/Bands/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, [FromBody] Band band)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] Band band)
         {
             //Frissítjük az adott ID-jű elemet a kapott elem szerint
             await _bandService.UpdateBandAsync(id, _mapper.Map<DAL.Entities.Band>(band));
@@ -64,7 +64,7 @@ namespace KoncertManager.API.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
             //Töröljük az adott ID-jű elemet
             await _bandService.DeleteBandAsync(id);

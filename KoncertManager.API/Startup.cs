@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using KoncertManager.BLL;
 using KoncertManager.BLL.Interfaces;
+using KoncertManager.BLL.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -40,6 +41,8 @@ namespace KoncertManager.API
 
             //Megadjuk az elemeink kiszolgálóinak az interface-ét, és ezek az implementálását
             services.AddTransient<IBandService, BandService>();
+            services.AddTransient<IVenueService, VenueService>();
+            services.AddTransient<IConcertService, ConcertService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

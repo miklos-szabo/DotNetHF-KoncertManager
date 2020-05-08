@@ -5,8 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="1056.204">
     <Grid>
-        
+        <Button x:Name="buttonReadAll" Content="Read all" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="buttonReadAll_Click"/>
+        <TextBlock x:Name="tbOutput" HorizontalAlignment="Left" Margin="224,45,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="344" Width="378"/>
+        <Button x:Name="buttonCreateNew" Content="Create New" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="75" Click="buttonCreateNew_Click"/>
+        <ListBox x:Name="lbOutput" HorizontalAlignment="Left" Height="344" Margin="670,45,0,0" VerticalAlignment="Top" Width="341"/>
+        <Button x:Name="buttonBands" Content="Bands" HorizontalAlignment="Left" Margin="62,129,0,0" VerticalAlignment="Top" Width="75" Click="buttonBands_Click"/>
+        <Button x:Name="buttonVenues" Content="Venues" HorizontalAlignment="Left" Margin="62,173,0,0" VerticalAlignment="Top" Width="75" Click="buttonVenues_Click"/>
+        <Button x:Name="buttonConcerts" Content="Concerts" HorizontalAlignment="Left" Margin="62,223,0,0" VerticalAlignment="Top" Width="75" Click="buttonConcerts_Click"/>
+
     </Grid>
 </Window>
