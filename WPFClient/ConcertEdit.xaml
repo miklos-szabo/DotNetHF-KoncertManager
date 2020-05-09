@@ -4,9 +4,35 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WPFClient"
+             xmlns:dtOs="clr-namespace:KoncertManager.BLL.DTOs;assembly=KoncertManager.BLL"
              mc:Ignorable="d" Height="354.744" Width="423.905">
     <Grid>
         <Label x:Name="labelAction" Content="Create Concert" HorizontalAlignment="Left" Margin="137,29,0,0" VerticalAlignment="Top" Width="142" FontSize="16" FontWeight="Bold"/>
-        <ComboBox HorizontalAlignment="Left" Margin="166,163,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="cbBand0" HorizontalAlignment="Left" Margin="169,181,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="dtOs:Band">
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+            <ComboBoxItem IsSelected="True">Select a band</ComboBoxItem>
+        </ComboBox>
+        <Label x:Name="labelVenue" Content="Venue" HorizontalAlignment="Left" Margin="91,84,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cbVenue" HorizontalAlignment="Left" Margin="169,84,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="dtOs:Venue">
+                    <TextBlock Text="{Binding Name}"></TextBlock>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+            <ComboBoxItem IsSelected="True">Select a Venue</ComboBoxItem>
+        </ComboBox>
+        <Label x:Name="labelDate" Content="Date" HorizontalAlignment="Left" Margin="91,115,0,0" VerticalAlignment="Top"/>
+        <DatePicker x:Name="datePicker" HorizontalAlignment="Left" Margin="169,117,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="labelTicketsAvailable" Content="Tickets available" HorizontalAlignment="Left" Margin="63,146,0,0" VerticalAlignment="Top"/>
+        <ComboBox x:Name="cbTickets" HorizontalAlignment="Left" Margin="169,150,0,0" VerticalAlignment="Top" Width="120">
+            <ComboBoxItem IsSelected="True">True</ComboBoxItem>
+            <ComboBoxItem>False</ComboBoxItem>
+        </ComboBox>
+        <Label x:Name="labelBands" Content="Bands" HorizontalAlignment="Left" Margin="91,177,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="buttonSend" Content="Send" HorizontalAlignment="Left" Margin="276,229,0,0" VerticalAlignment="Top" Width="75"/>
     </Grid>
 </UserControl>

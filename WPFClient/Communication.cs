@@ -51,6 +51,13 @@ namespace WPFClient
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
         }
 
+        public static async Task CreateConcertAsync(Concert concert)
+        {
+            var jstr = JsonConvert.SerializeObject(concert);
+            var response = await client.PostAsync("http://localhost:53501/api/venues",
+                new StringContent(jstr, Encoding.UTF8, "application/json"));
+        }
+
         public static async Task DeleteBandAsync(int id)
         {
             var response = await client.DeleteAsync($"http://localhost:53501/api/bands/{id}");
@@ -60,6 +67,12 @@ namespace WPFClient
         public static async Task DeleteVenueAsync(int id)
         {
             var response = await client.DeleteAsync($"http://localhost:53501/api/venues/{id}");
+            ResponseString = response.StatusCode == HttpStatusCode.NoContent ? "Successful delete!" : "Delete failed!";
+        }
+
+        public static async Task DeleteConcertAsync(int id)
+        {
+            var response = await client.DeleteAsync($"http://localhost:53501/api/concerts/{id}");
             ResponseString = response.StatusCode == HttpStatusCode.NoContent ? "Successful delete!" : "Delete failed!";
         }
 
@@ -75,6 +88,14 @@ namespace WPFClient
         {
             var jstr = JsonConvert.SerializeObject(venue);
             var response = await client.PutAsync($"http://localhost:53501/api/venues/{id}",
+                new StringContent(jstr, Encoding.UTF8, "application/json"));
+            ResponseString = response.StatusCode == HttpStatusCode.NoContent ? "Successful update!" : "Update failed!";
+        }
+
+        public static async Task UpdateConcertAsync(int id, Concert concert)
+        {
+            var jstr = JsonConvert.SerializeObject(concert);
+            var response = await client.PutAsync($"http://localhost:53501/api/concerts/{id}",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
             ResponseString = response.StatusCode == HttpStatusCode.NoContent ? "Successful update!" : "Update failed!";
         }

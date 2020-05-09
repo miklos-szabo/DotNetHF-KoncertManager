@@ -79,7 +79,11 @@ namespace WPFClient
             }
             else if (CurrentView == typeof(Concert))
             {
-                //TODO
+                var concertEdit = new ConcertEdit();
+                concertEdit.Venues = Venues;
+                concertEdit.Bands = Bands;
+                concertEdit.PopulateComboBoxes();
+                inputControl.Content = concertEdit;
             }
             
         }
@@ -134,7 +138,8 @@ namespace WPFClient
                 }
                 else if (selectedItem is Concert concert)
                 {
-                    //TODO
+                    await Communication.DeleteConcertAsync(concert.Id);
+                    SetTbOutput();
                 }
             }
 

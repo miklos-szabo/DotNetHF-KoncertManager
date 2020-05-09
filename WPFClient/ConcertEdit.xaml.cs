@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using KoncertManager.BLL.DTOs;
 
 namespace WPFClient
 {
@@ -20,9 +21,19 @@ namespace WPFClient
     /// </summary>
     public partial class ConcertEdit : UserControl
     {
+        public List<Band> Bands { get; set; }
+        public List<Venue> Venues { get; set; }
+        public ActionMode ActionMode { get; set; } = ActionMode.Create;
+        public int EditedId { get; set; }
         public ConcertEdit()
         {
             InitializeComponent();
+        }
+
+        public void PopulateComboBoxes()
+        {
+            Venues.ForEach(v => cbVenue.Items.Add(v));
+            Bands.ForEach(b => cbBand0.Items.Add(b));
         }
     }
 }
