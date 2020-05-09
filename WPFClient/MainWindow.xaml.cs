@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -23,57 +24,157 @@ namespace WPFClient
     /// </summary>
     public partial class MainWindow : Window
     {
+        public List<Band> Bands { get; set; }
+        public List<Venue> Venues { get; set; }
+        public List<Concert> Concerts { get; set; }
+        public Type CurrentView { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private static readonly HttpClient client = new HttpClient();
-        public string ResponseString { get; set; }
-
-
-        private async void buttonReadAll_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void buttonCreateNew_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private async void buttonBands_Click(object sender, RoutedEventArgs e)
         {
             tbOutput.Text = "Loading";
-            ResponseString = await client.GetStringAsync("http://localhost:53501/api/bands");
-            tbOutput.Text = ResponseString;
-            List<Band> bands = JsonConvert.DeserializeObject<List<Band>>(ResponseString);
-            List<string> bandsOutput = new List<string>();
-            bands.ForEach(b => bandsOutput.Add($"{b.Id} - {b.Name} - {b.FormedIn} - {b.Country}"));
-            lbOutput.ItemsSource = bandsOutput;
+            await GetBands();
+            SetTbOutput();
+
+            CurrentView = typeof(Band);
+            SetListSource();
         }
 
         private async void buttonVenues_Click(object sender, RoutedEventArgs e)
         {
             tbOutput.Text = "Loading";
-            ResponseString = await client.GetStringAsync("http://localhost:53501/api/venues");
-            tbOutput.Text = ResponseString;
-            List<Venue> venues = JsonConvert.DeserializeObject<List<Venue>>(ResponseString);
-            List<string> venuesOutput = new List<string>();
-            venues.ForEach(v => venuesOutput.Add($"{v.Id} - {v.Name} - {v.Address} - {v.Capacity}"));
-            lbOutput.ItemsSource = venuesOutput;
+            await GetVenues();
+            SetTbOutput();
+
+            CurrentView = typeof(Venue);
+            SetListSource();
         }
 
         private async void buttonConcerts_Click(object sender, RoutedEventArgs e)
         {
             tbOutput.Text = "Loading";
-            ResponseString = await client.GetStringAsync("http://localhost:53501/api/concerts");
-            tbOutput.Text = ResponseString;
-            List<Concert> concerts = JsonConvert.DeserializeObject<List<Concert>>(ResponseString);
-            List<string> concertOutput = new List<string>();
+            await GetConcerts();
+            SetTbOutput();
 
-            concerts.ForEach(c => concertOutput.Add($"{c.Id} - {c.Date} - {c.TicketsAvailable} - {c.Venue.Name}"));
-            lbOutput.ItemsSource = concertOutput;
+            CurrentView = typeof(Concert);
+            SetListSource();
+        }
+        private void buttonCreateNew_Click(object sender, RoutedEventArgs e)
+        {
+            if (CurrentView == typeof(Band))
+            {
+                //Create mód az alapértelmezett, itt nem kell állítani semmit
+                var bandEdit = new BandEdit();
+                inputControl.Content = bandEdit;
+            }
+            else if (CurrentView == typeof(Venue))
+            {
+                var venueEdit = new VenueEdit();
+                inputControl.Content = venueEdit;
+            }
+            else if (CurrentView == typeof(Concert))
+            {
+                //TODO
+            }
+            
+        }
+
+        private void buttonEdit_Click(object sender, RoutedEventArgs e)
+        {
+            if (lbOutput.SelectedItem is Band band)
+            {
+                var bandEdit = new BandEdit
+                {
+                    ActionMode = ActionMode.Edit,
+                    labelAction = {Content = "Edit Band"},
+                    tbName = {Text = band.Name},
+                    tbFormedIn = {Text = band.FormedIn.ToString()},
+                    tbCountry = {Text = band.Country},
+                    EditedId = band.Id
+                };
+                inputControl.Content = bandEdit;
+            }
+            else if (lbOutput.SelectedItem is Venue venue)
+            {
+                var venueEdit = new VenueEdit
+                {
+                    ActionMode = ActionMode.Edit,
+                    LabelAction = {Content = "Edit Venue"},
+                    tbName = {Text = venue.Name},
+                    tbAddress = {Text = venue.Address},
+                    tbCapacity = {Text = venue.Capacity.ToString()},
+                    EditedId = venue.Id
+                };
+                inputControl.Content = venueEdit;
+            }
+            else if (CurrentView == typeof(Concert))
+            {
+                //TODO
+            }
+        }
+
+        private async void buttonDelete_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (var selectedItem in lbOutput.SelectedItems)
+            {
+                if (selectedItem is Band band)
+                {
+                    await Communication.DeleteBandAsync(band.Id);
+                    SetTbOutput();
+                }
+                else if (selectedItem is Venue venue)
+                {
+                    await Communication.DeleteVenueAsync(venue.Id);
+                    SetTbOutput();
+                }
+                else if (selectedItem is Concert concert)
+                {
+                    //TODO
+                }
+            }
+
+            if (CurrentView == typeof(Band))
+                await GetBands();
+            else if (CurrentView == typeof(Venue))
+                await GetVenues();
+            else if (CurrentView == typeof(Concert))
+                await GetConcerts();
+            SetListSource();
+        }
+
+        public void SetTbOutput()
+        {
+            tbOutput.Text = Communication.ResponseString;
+        }
+
+        public async Task GetConcerts()
+        {
+            Concerts = await Communication.GetConcertsAsync();
+        }
+
+        public async Task GetVenues()
+        {
+            Venues = await Communication.GetVenuesAsync();
+        }
+
+        public async Task GetBands()
+        {
+            Bands = await Communication.GetBandsAsync();
+        }
+
+        public void SetListSource()
+        {
+            if(CurrentView == typeof(Band))
+                lbOutput.ItemsSource = Bands;
+            else if (CurrentView == typeof(Venue))
+                lbOutput.ItemsSource = Venues;
+            else if (CurrentView == typeof(Concert))
+                lbOutput.ItemsSource = Concerts;
         }
     }
 }
