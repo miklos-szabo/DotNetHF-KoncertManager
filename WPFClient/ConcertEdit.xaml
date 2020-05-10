@@ -8,7 +8,7 @@
              mc:Ignorable="d" Height="354.744" Width="423.905">
     <Grid>
         <Label x:Name="labelAction" Content="Create Concert" HorizontalAlignment="Left" Margin="137,29,0,0" VerticalAlignment="Top" Width="142" FontSize="16" FontWeight="Bold"/>
-        <ComboBox x:Name="cbBand0" HorizontalAlignment="Left" Margin="169,181,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+        <ComboBox x:Name="cbBand0" HorizontalAlignment="Left" Margin="169,183,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
             <ComboBox.ItemTemplate>
                 <DataTemplate DataType="dtOs:Band">
                     <TextBlock Text="{Binding Name}"></TextBlock>
@@ -32,7 +32,47 @@
             <ComboBoxItem IsSelected="True">True</ComboBoxItem>
             <ComboBoxItem>False</ComboBoxItem>
         </ComboBox>
-        <Label x:Name="labelBands" Content="Bands" HorizontalAlignment="Left" Margin="91,177,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="buttonSend" Content="Send" HorizontalAlignment="Left" Margin="276,229,0,0" VerticalAlignment="Top" Width="75"/>
+        <Label x:Name="labelBands" Content="Bands" HorizontalAlignment="Left" Margin="91,181,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="buttonSend" Content="Send" HorizontalAlignment="Left" Margin="327,209,0,0" VerticalAlignment="Top" Width="75" Click="buttonSend_Click"/>
+        <ComboBox x:Name="cbBand1" HorizontalAlignment="Left" Margin="169,210,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="dtOs:Band">
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+            <ComboBoxItem IsSelected="True" Content="Select a band"/>
+        </ComboBox>
+        <ComboBox x:Name="cbBand2" HorizontalAlignment="Left" Margin="169,237,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="dtOs:Band">
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+            <ComboBoxItem IsSelected="True" Content="Select a band"/>
+        </ComboBox>
+        <ComboBox x:Name="cbBand3" HorizontalAlignment="Left" Margin="169,264,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="dtOs:Band">
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+            <ComboBoxItem IsSelected="True" Content="Select a band"/>
+        </ComboBox>
+        <ComboBox x:Name="cbBand4" HorizontalAlignment="Left" Margin="169,291,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="dtOs:Band">
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+            <ComboBoxItem IsSelected="True" Content="Select a band"/>
+        </ComboBox>
+        <ComboBox x:Name="cbBand5" HorizontalAlignment="Left" Margin="169,318,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+            <ComboBox.ItemTemplate>
+                <DataTemplate DataType="dtOs:Band">
+                    <TextBlock Text="{Binding Name}"/>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+            <ComboBoxItem IsSelected="True" Content="Select a band"/>
+        </ComboBox>
     </Grid>
 </UserControl>

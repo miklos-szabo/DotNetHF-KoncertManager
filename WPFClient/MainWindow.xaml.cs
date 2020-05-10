@@ -32,8 +32,20 @@ namespace WPFClient
         public MainWindow()
         {
             InitializeComponent();
+            AtStart();
         }
 
+        public async void AtStart()
+        {
+            tbOutput.Text = "Loading";
+            await GetBands();
+            await GetVenues();
+            await GetConcerts();
+            SetTbOutput();
+
+            CurrentView = typeof(Concert);
+            SetListSource();
+        }
 
         private async void buttonBands_Click(object sender, RoutedEventArgs e)
         {
@@ -116,9 +128,19 @@ namespace WPFClient
                 };
                 inputControl.Content = venueEdit;
             }
-            else if (CurrentView == typeof(Concert))
+            else if (lbOutput.SelectedItem is Concert concert)
             {
-                //TODO
+                var concertEdit = new ConcertEdit
+                {
+                    ActionMode = ActionMode.Edit,
+                    labelAction = {Content = "Edit Concert"},
+                    EditedConcert = concert,
+                    Venues = Venues,
+                    Bands = Bands
+                };
+                concertEdit.PopulateComboBoxes();
+                concertEdit.SetDataToEdit();
+                inputControl.Content = concertEdit;
             }
         }
 
