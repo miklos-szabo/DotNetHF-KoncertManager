@@ -15,10 +15,10 @@ namespace KoncertManager.BLL.Interfaces
         Task<IEnumerable<Concert>> GetConcertsAsync();
 
         //Betesz az adatbázisba egy új, paraméterként kapott koncertet
-        Task<Concert> InsertConcertAsync(Concert newConcert);
+        Task<Concert> InsertConcertAsync(Concert newConcert, List<Band> bands);
 
         //Módosítja az adott ID-jú koncertet a kapott koncertre
-        Task UpdateConcertAsync(int concertId, Concert updatedConcert);
+        Task UpdateConcertAsync(int concertId, Concert updatedConcert, List<Band> bands);
 
         //Töröl egy koncertet ID alapján
         Task DeleteConcertAsync(int concertId);

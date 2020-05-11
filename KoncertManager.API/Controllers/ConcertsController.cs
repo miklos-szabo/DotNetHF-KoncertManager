@@ -44,13 +44,14 @@ namespace KoncertManager.API.Controllers
         public async Task<ActionResult<Concert>> PostAsync([FromBody] Concert concert)
         {
             //Az együttes DTO elemből DAL elemet csinálunk, és beillesztjük az adatbázisba
-            var created = await _concertService.InsertConcertAsync(_mapper.Map<DAL.Entities.Concert>(concert));
+            var created = await _concertService.InsertConcertAsync(_mapper.Map<DAL.Entities.Concert>(concert),
+                _mapper.Map<List<DAL.Entities.Band>>(concert.Bands));
 
             //201-es kódot adunk vissza
             return CreatedAtAction(
                 nameof(GetAsync),
                 new {id = concert.Id},
-                _mapper.Map<Concert>(concert));
+                _mapper.Map<Concert>(created));
         }
 
         // PUT: api/Concerts/5
@@ -58,7 +59,8 @@ namespace KoncertManager.API.Controllers
         public async Task<ActionResult> PutAsync(int id, [FromBody] Concert concert)
         {
             //Frissítjük az adott ID-jű elemet a kapott elem szerint
-            await _concertService.UpdateConcertAsync(id, _mapper.Map<DAL.Entities.Concert>(concert));
+            await _concertService.UpdateConcertAsync(id, _mapper.Map<DAL.Entities.Concert>(concert),
+                _mapper.Map<List<DAL.Entities.Band>>(concert.Bands));
             return NoContent();
         }
 

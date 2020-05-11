@@ -38,16 +38,29 @@ namespace KoncertManager.BLL.Services
                 .ToListAsync();
         }
 
-        public async Task<Concert> InsertConcertAsync(Concert newConcert)
+        public async Task<Concert> InsertConcertAsync(Concert newConcert, List<Band> bands)
         {
+            bands.ForEach(b =>
+            {
+                var concertBand = new ConcertBand{Band = _context.Bands.Find(b.Id), Concert = newConcert};
+                newConcert.ConcertBands.Add(concertBand);
+            });
+
             _context.Concerts.Add(newConcert);
             await _context.SaveChangesAsync();
             return newConcert;
         }
 
-        public async Task UpdateConcertAsync(int concertId, Concert updatedConcert)
+        public async Task UpdateConcertAsync(int concertId, Concert updatedConcert, List<Band> bands)
         {
             updatedConcert.Id = concertId;
+
+            bands.ForEach(b =>
+            {
+                var concertBand = new ConcertBand { Band = _context.Bands.Find(b.Id), Concert = updatedConcert };
+                updatedConcert.ConcertBands.Add(concertBand);
+            });
+
             var entry = _context.Concerts.Attach(updatedConcert);
             entry.State = EntityState.Modified;
             try

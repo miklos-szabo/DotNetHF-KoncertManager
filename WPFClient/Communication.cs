@@ -54,7 +54,7 @@ namespace WPFClient
         public static async Task CreateConcertAsync(Concert concert)
         {
             var jstr = JsonConvert.SerializeObject(concert);
-            var response = await client.PostAsync("http://localhost:53501/api/venues",
+            var response = await client.PostAsync("http://localhost:53501/api/concerts",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
         }
 
