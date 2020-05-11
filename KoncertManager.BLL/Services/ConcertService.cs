@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KoncertManager.BLL.Exceptions;
@@ -53,16 +54,35 @@ namespace KoncertManager.BLL.Services
 
         public async Task UpdateConcertAsync(int concertId, Concert updatedConcert, List<Band> bands)
         {
-            updatedConcert.Id = concertId;
+            //Lekérdezzük a módosítandó koncertet, ki szeretnénk törölni belőle az együtteseket
+            var oldConcert = await _context.Concerts    
+                .Include(c => c.ConcertBands)
+                .SingleOrDefaultAsync(c => c.Id == concertId);
+            if (oldConcert != null) //Ha megvan
+            {
+                //Lekérdezzük a hozzá tartozó ConcertBandeket
+                var concertBands = oldConcert.ConcertBands.Where(cb => cb.ConcertId == concertId).ToList();
+                foreach (var concertBand in concertBands)
+                {
+                    //És kitöröljük őket
+                    oldConcert.ConcertBands.Remove(concertBand);
+                }
 
+                await _context.SaveChangesAsync(); //Elmentjük a törlést
+                //Leállítjuk a koncert követését, enélkül nem lehetne a koncert objektumra frissíteni
+                _context.Entry(oldConcert).State = EntityState.Detached;
+            }
+
+            updatedConcert.Id = concertId;
             bands.ForEach(b =>
             {
+                //Hozzáadjuk az új koncerthez az összes együttes ConcertBand objektumát
                 var concertBand = new ConcertBand { Band = _context.Bands.Find(b.Id), Concert = updatedConcert };
                 updatedConcert.ConcertBands.Add(concertBand);
             });
 
             var entry = _context.Concerts.Attach(updatedConcert);
-            entry.State = EntityState.Modified;
+            entry.State = EntityState.Modified; //Attach nem teszi magától Modified-ba
             try
             {
                 await _context.SaveChangesAsync();

@@ -21,10 +21,6 @@ namespace KoncertManager.API.AutoMapper
                         context.Mapper.Map<BLL.DTOs.Band>(cb.Band)).ToList())   //DTO elemként tároljuk el
                 .ReverseMap();
 
-            //TODO ???
-            CreateMap<Band, DAL.Entities.ConcertBand>()
-                .ForMember(cb => cb.Band, opt => opt.MapFrom(b => b));
-
             //Együttesek leképzése
             CreateMap<DAL.Entities.Band, BLL.DTOs.Band>().ReverseMap();
 
