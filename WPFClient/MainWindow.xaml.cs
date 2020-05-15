@@ -28,6 +28,7 @@ namespace WPFClient
         public List<Venue> Venues { get; set; }
         public List<Concert> Concerts { get; set; }
         public Type CurrentView { get; set; }
+        public string BandsAsString { get; set; }
 
         public MainWindow()
         {

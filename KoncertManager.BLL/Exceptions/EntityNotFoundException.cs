@@ -4,7 +4,7 @@ using System.Text;
 
 namespace KoncertManager.BLL.Exceptions
 {
-    class EntityNotFoundException : Exception
+    public class EntityNotFoundException : Exception
     {
         public string Message { get; set; }
 

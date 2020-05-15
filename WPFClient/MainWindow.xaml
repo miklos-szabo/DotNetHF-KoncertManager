@@ -7,6 +7,10 @@
         xmlns:dtOs="clr-namespace:KoncertManager.BLL.DTOs;assembly=KoncertManager.BLL"
         mc:Ignorable="d"
         Title="MainWindow" Height="735.766" Width="1208.941">
+    <Window.Resources>
+        <local:BandsConverter x:Key="BandsConverter"></local:BandsConverter>
+        <local:TicketsConverter x:Key="TicketsConverter"></local:TicketsConverter>
+    </Window.Resources>
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True" Margin="10,10,-10,-10">
             <TextBlock x:Name="tbOutput" TextWrapping="Wrap" Text="{Binding Source={x:Static local:Communication.ResponseString}}" Height="316" Width="1151" VerticalAlignment="Bottom"/>
@@ -41,13 +45,19 @@
                 <DataTemplate DataType="{x:Type dtOs:Concert}">
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                            <ColumnDefinition Width="75"></ColumnDefinition>
+                            <ColumnDefinition Width="150"></ColumnDefinition>
                             <ColumnDefinition Width="100"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                            <ColumnDefinition Width="20"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Date}" Grid.Column="0"></TextBlock>
-                        <TextBlock Text="{Binding Venue.Name}" Grid.Column="1"></TextBlock>
-                        <TextBlock Text="{Binding TicketsAvailable}" Grid.Column="2"></TextBlock>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15"></RowDefinition>
+                            <RowDefinition Height="15"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="{Binding Bands, Converter={StaticResource BandsConverter}}" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                        <TextBlock Text="{Binding Date, StringFormat=d, ConverterCulture=hu-HU}" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Text="{Binding Venue.Name}" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center"></TextBlock>
+                        <TextBlock Text="{Binding TicketsAvailable, Converter={StaticResource TicketsConverter}}" Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
                     </Grid>
                 </DataTemplate>
 

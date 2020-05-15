@@ -64,7 +64,7 @@ namespace KoncertManager.BLL
             catch (DbUpdateConcurrencyException)
             {
                 if (await _context.Bands.SingleOrDefaultAsync(b => b.Id == bandId) == null)
-                    throw new EntityNotFoundException("Nem található az együttes!");
+                    throw new EntityNotFoundException($"Nem található az Id={bandId} együttes!");
                 throw;
             }
         }
