@@ -48,10 +48,15 @@ namespace KoncertManager.API.Controllers
                 _mapper.Map<List<DAL.Entities.Band>>(concert.Bands));
 
             //201-es kódot adunk vissza
-            return CreatedAtAction(
+            return CreatedAtAction( //TODO WTF ez 201-et küld el és 500 lesz belőle
                 nameof(GetAsync),
-                new {id = concert.Id},
-                _mapper.Map<Concert>(created));
+                "Concerts",
+                new {id = created.Id},
+                _mapper.Map<Concert>(created)); 
+            /*return CreatedAtRoute(
+                "/api/concerts",
+                new {id = created.Id},
+                _mapper.Map<Concert>(created));*/
         }
 
         // PUT: api/Concerts/5

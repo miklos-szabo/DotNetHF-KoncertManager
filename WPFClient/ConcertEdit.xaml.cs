@@ -22,12 +22,12 @@ namespace WPFClient
     /// </summary>
     public partial class ConcertEdit : UserControl
     {
-        public List<Band> Bands { get; set; }
-        public List<Venue> Venues { get; set; }
-        public ActionMode ActionMode { get; set; } = ActionMode.Create;
-        public int EditedId { get; set; }
-        public Concert EditedConcert { get; set; }
-        public List<ComboBox> Boxes { get; set; }
+        public List<Band> Bands { get; set; }   //Összes, adatbázisban levő együttes
+        public List<Venue> Venues { get; set; } //Össze, adatbázisban levő helyszín
+        public ActionMode ActionMode { get; set; } = ActionMode.Create; //Létrehozás, vagy szerkesztés
+        public int EditedId { get; set; }   //Annak a koncertnek az ID-je, amit éppen szerkesztünk
+        public Concert EditedConcert { get; set; }  //Az a koncert, amit éppen szerkesztünk
+        public List<ComboBox> Boxes { get; set; }   //A 6 legördülő menü, amivel az együtteseket választjuk ki
 
         public ConcertEdit()
         {
@@ -35,6 +35,9 @@ namespace WPFClient
             Boxes = new List<ComboBox> { cbBand0, cbBand1, cbBand2, cbBand3, cbBand4, cbBand5 };
         }
 
+        /**
+         * Legördülő menük feltöltése elemekkel
+         */
         public void PopulateComboBoxes()
         {
             Venues.ForEach(v => cbVenue.Items.Add(v));
@@ -42,6 +45,9 @@ namespace WPFClient
                 Boxes.ForEach(cb => cb.Items.Add(b)));
         }
 
+        /**
+         * A legördülő menük adatai alapján listába szedjük a kiválasztott együtteseket
+         */
         public List<Band> GetListOfBands()
         {
             //Ha többször ugyanazt kiválasztottuk, csak egyszer kerüljön be
@@ -54,6 +60,9 @@ namespace WPFClient
             return selectedBands.ToList();
         }
 
+        /**
+         * Amikor szerkesztésbe fogunk, a mezőket feltöltjük a jelenlegi adatokkal
+         */
         public void SetDataToEdit()
         {
             EditedId = EditedConcert.Id;
@@ -61,15 +70,19 @@ namespace WPFClient
             datePicker.DisplayDate = new DateTime(EditedConcert.Date.Year, EditedConcert.Date.Month, EditedConcert.Date.Day);
             datePicker.Text = datePicker.DisplayDate.ToString(CultureInfo.CurrentCulture);
             cbTickets.SelectedItem = EditedConcert.TicketsAvailable ? 
-                cbTickets.Items.GetItemAt(0) : cbTickets.Items.GetItemAt(1);
+                cbTickets.Items.GetItemAt(0) : cbTickets.Items.GetItemAt(1);    //0: "True", 1: "False", jobb megoldást nem találtam
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 5; i++) //Együtteseket kiválasztó comboboxok elemeinek beállítása
             {
                 if (EditedConcert.Bands.Count > i)
                     Boxes[i].SelectedItem = Bands.Find(b => b.Id == EditedConcert.Bands[i].Id);
             }
         }
 
+        /**
+         * Adataink alapján összeállítunk egy új koncertet, és elküljük a szervernek,
+         * vagy létrehozással, vagy szerkesztéssel
+         */
         private async void buttonSend_Click(object sender, RoutedEventArgs e)
         {
             if (!(cbVenue.SelectedItem is Venue venue)) return;
@@ -82,15 +95,16 @@ namespace WPFClient
                 VenueId = venue.Id
             };
 
-            if (ActionMode == ActionMode.Create)
-                await Communication.CreateConcertAsync(concert);
-            else
-                await Communication.UpdateConcertAsync(EditedId, concert);
-
             var window = (MainWindow)Window.GetWindow(this);
-            await window.GetConcerts();
-            window.SetListSource();
-            window.SetTbOutput();
+
+            if (ActionMode == ActionMode.Create)
+                window.ResultCreate(await Communication.CreateConcertAsync(concert));
+            else
+                window.ResultEdit(await Communication.UpdateConcertAsync(EditedId, concert)); 
+
+            await window.GetConcerts();     //Frissítjük a koncertek listáját
+            window.SetListSource();         //A lista forrása jó legyen
+            window.SetViewToLists();        //A nézetet a listára állítjuk vissza, edit helyett
         }
     }
 }

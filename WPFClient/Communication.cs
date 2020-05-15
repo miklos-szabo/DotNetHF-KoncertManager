@@ -17,87 +17,128 @@ namespace WPFClient
     public static class Communication
     {
         private static readonly HttpClient client = new HttpClient();
-        public static string ResponseString { get; set; }
 
+        /**
+         * Visszaadja az összes együttest - GET
+         */
         public static async Task<List<Band>> GetBandsAsync()
         {
-            ResponseString = await client.GetStringAsync("http://localhost:53501/api/bands");
-            return JsonConvert.DeserializeObject<List<Band>>(ResponseString);
+            string responseString = await client.GetStringAsync("http://localhost:53501/api/bands");
+            return JsonConvert.DeserializeObject<List<Band>>(responseString);
         }
 
+        /**
+         * Visszaadja az összes helyszínt - GET
+         */
         public static async Task<List<Venue>> GetVenuesAsync()
         {
-            ResponseString = await client.GetStringAsync("http://localhost:53501/api/venues");
-            return JsonConvert.DeserializeObject<List<Venue>>(ResponseString);
+            string responseString = await client.GetStringAsync("http://localhost:53501/api/venues");
+            return JsonConvert.DeserializeObject<List<Venue>>(responseString);
         }
 
+        /**
+         * Visszaadja az összes koncertet - GET
+         */
         public static async Task<List<Concert>> GetConcertsAsync()
         {
-            ResponseString = await client.GetStringAsync("http://localhost:53501/api/concerts");
-            return JsonConvert.DeserializeObject<List<Concert>>(ResponseString);
+            string responseString = await client.GetStringAsync("http://localhost:53501/api/concerts");
+            return JsonConvert.DeserializeObject<List<Concert>>(responseString);
         }
 
-        public static async Task CreateBandAsync(Band band)
+        /**
+         * Létrrehoz egy együttest a paraméter alapján, visszaad egy boolt a sikerességről - POST
+         */
+        public static async Task<bool> CreateBandAsync(Band band)
         {
             var jstr = JsonConvert.SerializeObject(band);
             var response = await client.PostAsync("http://localhost:53501/api/bands",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
+            return response.StatusCode == HttpStatusCode.Created;
         }
 
-        public static async Task CreateVenueAsync(Venue venue)
+        /**
+         * Létrrehoz egy helyszínt a paraméter alapján, visszaad egy boolt a sikerességről - POST
+         */
+        public static async Task<bool> CreateVenueAsync(Venue venue)
         {
             var jstr = JsonConvert.SerializeObject(venue);
             var response = await client.PostAsync("http://localhost:53501/api/venues",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
+            return response.StatusCode == HttpStatusCode.Created;
         }
 
-        public static async Task CreateConcertAsync(Concert concert)
+        /**
+         * Létrehoz egy koncertet a paraméter alapján, visszaad egy boolt a sikerességről - POST
+         */
+        public static async Task<bool> CreateConcertAsync(Concert concert)
         {
             var jstr = JsonConvert.SerializeObject(concert);
             var response = await client.PostAsync("http://localhost:53501/api/concerts",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
+            return response.StatusCode == HttpStatusCode.Created;
         }
 
-        public static async Task DeleteBandAsync(int id)
+        /**
+         * Törli az adott Id-jű együttest, visszaad egy boolt a sikerességéről - DELETE
+         */
+        public static async Task<bool> DeleteBandAsync(int id)
         {
             var response = await client.DeleteAsync($"http://localhost:53501/api/bands/{id}");
-            ResponseString = response.StatusCode == HttpStatusCode.NoContent ? "Successful delete!" : "Delete failed!";
+            return response.StatusCode == HttpStatusCode.NoContent;
         }
 
-        public static async Task DeleteVenueAsync(int id)
+        /**
+         * Törli az adott Id-jű helyszínt, visszaad egy boolt a sikerességről - DELETE
+         */
+        public static async Task<bool> DeleteVenueAsync(int id)
         {
             var response = await client.DeleteAsync($"http://localhost:53501/api/venues/{id}");
-            ResponseString = response.StatusCode == HttpStatusCode.NoContent ? "Successful delete!" : "Delete failed!";
+            return response.StatusCode == HttpStatusCode.NoContent;
         }
 
-        public static async Task DeleteConcertAsync(int id)
+        /**
+         * Törli az adott ID-jű koncertet, visszaad egy boolt a sikerességről - DELETE
+         */
+        public static async Task<bool> DeleteConcertAsync(int id)
         {
             var response = await client.DeleteAsync($"http://localhost:53501/api/concerts/{id}");
-            ResponseString = response.StatusCode == HttpStatusCode.NoContent ? "Successful delete!" : "Delete failed!";
+            return response.StatusCode == HttpStatusCode.NoContent;
         }
 
-        public static async Task UpdateBandAsync(int id, Band band)
+        /**
+         * Frissíti az adott Id-jű együttest a paraméterben levő együttesre,
+         * visszaad egy boolt a sikerességről - PUT
+         */
+        public static async Task<bool> UpdateBandAsync(int id, Band band)
         {
             var jstr = JsonConvert.SerializeObject(band);
             var response = await client.PutAsync($"http://localhost:53501/api/bands/{id}",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
-            ResponseString = response.StatusCode == HttpStatusCode.NoContent ? "Successful update!" : "Update failed!";
+            return response.StatusCode == HttpStatusCode.NoContent;
         }
 
-        public static async Task UpdateVenueAsync(int id, Venue venue)
+        /**
+         * Frissíti az adott Id-jű helyszínt a paraméterben levő helyszínre,
+         * visszaad egy boolt a sikerességről - PUT
+         */
+        public static async Task<bool> UpdateVenueAsync(int id, Venue venue)
         {
             var jstr = JsonConvert.SerializeObject(venue);
             var response = await client.PutAsync($"http://localhost:53501/api/venues/{id}",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
-            ResponseString = response.StatusCode == HttpStatusCode.NoContent ? "Successful update!" : "Update failed!";
+            return response.StatusCode == HttpStatusCode.NoContent;
         }
 
-        public static async Task UpdateConcertAsync(int id, Concert concert)
+        /**
+         * Frissíti az adott Id-jű koncertet a paraméterben levő koncertre,
+         * visszaad egy boolt a sikerességről - PUT
+         */
+        public static async Task<bool> UpdateConcertAsync(int id, Concert concert)
         {
             var jstr = JsonConvert.SerializeObject(concert);
             var response = await client.PutAsync($"http://localhost:53501/api/concerts/{id}",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
-            ResponseString = response.StatusCode == HttpStatusCode.NoContent ? "Successful update!" : "Update failed!";
+            return response.StatusCode == HttpStatusCode.NoContent;
         }
     }
 }

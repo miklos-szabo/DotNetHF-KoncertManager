@@ -6,69 +6,74 @@
         xmlns:local="clr-namespace:WPFClient"
         xmlns:dtOs="clr-namespace:KoncertManager.BLL.DTOs;assembly=KoncertManager.BLL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="735.766" Width="1208.941">
+        Title="MainWindow" Height="453.766" Width="959.941">
     <Window.Resources>
         <local:BandsConverter x:Key="BandsConverter"></local:BandsConverter>
         <local:TicketsConverter x:Key="TicketsConverter"></local:TicketsConverter>
     </Window.Resources>
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True" Margin="10,10,-10,-10">
-            <TextBlock x:Name="tbOutput" TextWrapping="Wrap" Text="{Binding Source={x:Static local:Communication.ResponseString}}" Height="316" Width="1151" VerticalAlignment="Bottom"/>
-        </ScrollViewer>
-        <Button x:Name="buttonCreateNew" Content="Create New" HorizontalAlignment="Left" Margin="626,99,0,0" VerticalAlignment="Top" Width="75" Click="buttonCreateNew_Click"/>
-        <ListBox x:Name="lbOutput" HorizontalAlignment="Left" Height="362" Margin="194,10,0,0" VerticalAlignment="Top" Width="409">
-            <ListBox.Resources>
-                <DataTemplate DataType="{x:Type dtOs:Band}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                            <ColumnDefinition Width="30"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}" Grid.Column="0"></TextBlock>
-                        <TextBlock Text="{Binding FormedIn}" Grid.Column="1"></TextBlock>
-                        <TextBlock Text="{Binding Country}" Grid.Column="2"></TextBlock>
-                    </Grid>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type dtOs:Venue}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                            <ColumnDefinition Width="150"></ColumnDefinition>
-                            <ColumnDefinition Width="20"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Text="{Binding Name}" Grid.Column="0"></TextBlock>
-                        <TextBlock Text="{Binding Address}" Grid.Column="1"></TextBlock>
-                        <TextBlock Text="{Binding Capacity}" Grid.Column="2"></TextBlock>
-                    </Grid>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type dtOs:Concert}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="200"></ColumnDefinition>
-                            <ColumnDefinition Width="75"></ColumnDefinition>
-                            <ColumnDefinition Width="150"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="15"></RowDefinition>
-                            <RowDefinition Height="15"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="{Binding Bands, Converter={StaticResource BandsConverter}}" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                        <TextBlock Text="{Binding Date, StringFormat=d, ConverterCulture=hu-HU}" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                        <TextBlock Text="{Binding Venue.Name}" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center"></TextBlock>
-                        <TextBlock Text="{Binding TicketsAvailable, Converter={StaticResource TicketsConverter}}" Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
-                    </Grid>
-                </DataTemplate>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
 
-            </ListBox.Resources>
-        </ListBox>
-        <Button x:Name="buttonBands" Content="Bands" HorizontalAlignment="Left" Margin="62,99,0,0" VerticalAlignment="Top" Width="75" Click="buttonBands_Click"/>
-        <Button x:Name="buttonVenues" Content="Venues" HorizontalAlignment="Left" Margin="62,143,0,0" VerticalAlignment="Top" Width="75" Click="buttonVenues_Click"/>
-        <Button x:Name="buttonConcerts" Content="Concerts" HorizontalAlignment="Left" Margin="62,188,0,0" VerticalAlignment="Top" Width="75" Click="buttonConcerts_Click"/>
-        <ContentControl x:Name="inputControl" HorizontalAlignment="Left" Margin="706,10,0,0" VerticalAlignment="Top" Height="362" Width="485"/>
-        <Button x:Name="buttonEdit" Content="Edit" HorizontalAlignment="Left" Margin="626,143,0,0" VerticalAlignment="Top" Width="75" Click="buttonEdit_Click"/>
-        <Button x:Name="buttonDelete" Content="Delete" HorizontalAlignment="Left" Margin="626,188,0,0" VerticalAlignment="Top" Width="75" Click="buttonDelete_Click"/>
+        <Button x:Name="buttonBands" Content="Bands" HorizontalAlignment="Left" Margin="62,99,0,0" VerticalAlignment="Top" Width="75" Click="buttonBands_Click" HorizontalContentAlignment="Center"/>
+        <Button x:Name="buttonVenues" Content="Venues" HorizontalAlignment="Left" Margin="62,143,0,0" VerticalAlignment="Top" Width="75" Click="buttonVenues_Click" HorizontalContentAlignment="Center"/>
+        <Button x:Name="buttonConcerts" Content="Concerts" HorizontalAlignment="Left" Margin="62,188,0,0" VerticalAlignment="Top" Width="75" Click="buttonConcerts_Click" HorizontalContentAlignment="Center"/>
+
+        <Button x:Name="buttonCreateNew" Content="Create New" HorizontalAlignment="Left" Margin="680,104,0,0" VerticalAlignment="Top" Width="75" Click="buttonCreateNew_Click" Grid.Column="1"/>
+        <Button x:Name="buttonEdit" Content="Edit" HorizontalAlignment="Left" Margin="680,143,0,0" VerticalAlignment="Top" Width="75" Click="buttonEdit_Click" Grid.Column="1"/>
+        <Button x:Name="buttonDelete" Content="Delete" HorizontalAlignment="Left" Margin="680,188,0,0" VerticalAlignment="Top" Width="75" Click="buttonDelete_Click" Grid.Column="1"/>
+        <StackPanel Grid.Column="1" Margin="0,0,97,0">
+            <TextBlock Name="tbStatus" FontSize="24" HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold"></TextBlock>
+            <ListBox x:Name="lbOutput" HorizontalAlignment="Left" Height="350" Margin="10,10,0,0" VerticalAlignment="Top" Width="655">
+                <ListBox.Resources>
+                    <DataTemplate DataType="{x:Type dtOs:Band}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}" Grid.Column="0"></TextBlock>
+                            <TextBlock Text="{Binding FormedIn}" Grid.Column="1"></TextBlock>
+                            <TextBlock Text="{Binding Country}" Grid.Column="2"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type dtOs:Venue}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition Width="40"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}" Grid.Column="0"></TextBlock>
+                            <TextBlock Text="{Binding Address}" Grid.Column="1"></TextBlock>
+                            <TextBlock Text="{Binding Capacity}" Grid.Column="2"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type dtOs:Concert}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="200"></ColumnDefinition>
+                                <ColumnDefinition Width="75"></ColumnDefinition>
+                                <ColumnDefinition Width="150"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="15"></RowDefinition>
+                                <RowDefinition Height="15"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Bands, Converter={StaticResource BandsConverter}}" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Text="{Binding Date, StringFormat=d, ConverterCulture=hu-HU}" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding Venue.Name}" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" TextWrapping="Wrap" HorizontalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding TicketsAvailable, Converter={StaticResource TicketsConverter}}" Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.Resources>
+            </ListBox>
+            <ContentControl x:Name="mainControl" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="362" Width="485" Grid.Column="1"/>
+        </StackPanel>
 
     </Grid>
 </Window>

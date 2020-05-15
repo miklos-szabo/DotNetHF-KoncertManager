@@ -58,11 +58,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BandsConverter.cs" />
+    <Compile Include="Converters\BandsConverter.cs" />
     <Compile Include="ConcertEdit.xaml.cs">
       <DependentUpon>ConcertEdit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TicketsConverter.cs" />
+    <Compile Include="Converters\TicketsConverter.cs" />
     <Compile Include="VenueEdit.xaml.cs">
       <DependentUpon>VenueEdit.xaml</DependentUpon>
     </Compile>
@@ -129,5 +129,6 @@
       <Name>KoncertManager.BLL</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
