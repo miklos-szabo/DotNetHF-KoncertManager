@@ -23,7 +23,8 @@
 
         <Button x:Name="buttonCreateNew" Content="Create New" HorizontalAlignment="Left" Margin="680,104,0,0" VerticalAlignment="Top" Width="75" Click="buttonCreateNew_Click" Grid.Column="1"/>
         <Button x:Name="buttonEdit" Content="Edit" HorizontalAlignment="Left" Margin="680,143,0,0" VerticalAlignment="Top" Width="75" Click="buttonEdit_Click" Grid.Column="1"/>
-        <Button x:Name="buttonDelete" Content="Delete" HorizontalAlignment="Left" Margin="680,188,0,0" VerticalAlignment="Top" Width="75" Click="buttonDelete_Click" Grid.Column="1"/>
+        <Button x:Name="buttonDelete" Content="Delete" HorizontalAlignment="Left" Margin="680,183,0,0" VerticalAlignment="Top" Width="75" Click="buttonDelete_Click" Grid.Column="1"/>
+        <Button x:Name="buttonSort" Content="Sort" Grid.Column="1" HorizontalAlignment="Left" Margin="680,222,0,0" VerticalAlignment="Top" Width="75" Click="buttonSort_Click"/>
         <StackPanel Grid.Column="1" Margin="0,0,97,0">
             <TextBlock Name="tbStatus" FontSize="24" HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold"></TextBlock>
             <ListBox x:Name="lbOutput" HorizontalAlignment="Left" Height="350" Margin="10,10,0,0" VerticalAlignment="Top" Width="655">
@@ -32,24 +33,32 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="200"></ColumnDefinition>
-                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="60"></ColumnDefinition>
                                 <ColumnDefinition Width="150"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Name}" Grid.Column="0"></TextBlock>
-                            <TextBlock Text="{Binding FormedIn}" Grid.Column="1"></TextBlock>
-                            <TextBlock Text="{Binding Country}" Grid.Column="2"></TextBlock>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="15"></RowDefinition>
+                                <RowDefinition Height="15"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Name}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding FormedIn}" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding Country}" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                         </Grid>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type dtOs:Venue}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="200"></ColumnDefinition>
-                                <ColumnDefinition Width="200"></ColumnDefinition>
-                                <ColumnDefinition Width="40"></ColumnDefinition>
+                                <ColumnDefinition Width="250"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="{Binding Name}" Grid.Column="0"></TextBlock>
-                            <TextBlock Text="{Binding Address}" Grid.Column="1"></TextBlock>
-                            <TextBlock Text="{Binding Capacity}" Grid.Column="2"></TextBlock>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="15"></RowDefinition>
+                                <RowDefinition Height="15"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Name}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding Address}" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                            <TextBlock Text="{Binding Capacity}" Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
                         </Grid>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type dtOs:Concert}">

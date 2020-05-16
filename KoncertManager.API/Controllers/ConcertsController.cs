@@ -33,7 +33,7 @@ namespace KoncertManager.API.Controllers
 
         // GET: api/Concerts/5
         [HttpGet("{id}", Name = "GetConcert")]
-        public async Task<ActionResult<Concert>> GetAsync(int id)
+        public async Task<ActionResult<Concert>> Get(int id)    //Nem lehet GetAsync a neve, létrehozáskor 500 lenne
         {
             //Lekérjük az elemet, és a DAL elemből DTO-t csinálunk
             return _mapper.Map<Concert>(await _concertService.GetConcertAsync(id));
@@ -48,15 +48,10 @@ namespace KoncertManager.API.Controllers
                 _mapper.Map<List<DAL.Entities.Band>>(concert.Bands));
 
             //201-es kódot adunk vissza
-            return CreatedAtAction( //TODO WTF ez 201-et küld el és 500 lesz belőle
-                nameof(GetAsync),
-                "Concerts",
+            return CreatedAtAction(
+                nameof(Get),        //Csak Get lehet a függvény neve, ha GetAsync, 500-at kap a kliens
                 new {id = created.Id},
-                _mapper.Map<Concert>(created)); 
-            /*return CreatedAtRoute(
-                "/api/concerts",
-                new {id = created.Id},
-                _mapper.Map<Concert>(created));*/
+                _mapper.Map<Concert>(created));
         }
 
         // PUT: api/Concerts/5

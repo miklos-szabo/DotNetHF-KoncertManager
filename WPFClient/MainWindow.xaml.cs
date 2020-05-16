@@ -48,6 +48,7 @@ namespace WPFClient
             await GetBands();   //Be kell tölteni az együtteseket és a helyszíneket is, mert ha koncertet 
             await GetVenues();      //szerkesztünk, a kiválasztásokhoz kell mindegyik elem
             await GetConcerts();
+            SortLists();
 
             CurrentView = typeof(Concert);
             SetListSource();
@@ -290,6 +291,25 @@ namespace WPFClient
             tbStatus.Foreground = Brushes.Black;
             tbStatus.Text = CurrentView.Name + "s";
             StatusTimer.Stop();
+        }
+
+        /**
+         * Rendezzük a listákat - koncerteket dátum szerint, együtteseket és helyszíneket névsor szerint
+         */
+        public void SortLists()
+        {
+            Concerts = Concerts.OrderBy(c => c.Date).ToList();
+            Bands = Bands.OrderBy(b => b.Name).ToList();
+            Venues = Venues.OrderBy(v => v.Name).ToList();
+        }
+
+        /**
+         * Rendezzük a listákat
+         */
+        private void buttonSort_Click(object sender, RoutedEventArgs e)
+        {
+            SortLists();
+            SetListSource();
         }
     }
 }
