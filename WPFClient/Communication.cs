@@ -43,7 +43,7 @@ namespace WPFClient
         public static async Task<List<Concert>> GetConcertsAsync()
         {
             //Az expand fontos, anélkül nem küldi el az együtteseket
-            string responseString = await client.GetStringAsync("http://localhost:53501/concerts?$expand=bands");
+            string responseString = await client.GetStringAsync("http://localhost:53501/concerts?$expand=bands,venue");
             return JsonConvert.DeserializeObject<ODataResponse<Concert>>(responseString).Values;
         }
 
