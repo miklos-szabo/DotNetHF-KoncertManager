@@ -10,7 +10,7 @@ Koncertre, együttesre és helyszínre is lehet:
 * Törölni egy kiválasztott elemet
 * Újat létrehozni, koncert esetén a meglévő együttesekből és helyszínekből lehet válogatni
 
-##Technológiák
+## Technológiák
 * Adatelérés: Entity Framework Core v3.1
 * Kommunikáció, szerveroldal: ASP.NET Core v3.1
 * Kliensoldal: WPF
