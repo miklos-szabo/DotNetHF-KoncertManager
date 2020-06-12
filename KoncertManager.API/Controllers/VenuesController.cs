@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using KoncertManager.BLL.DTOs;
 using KoncertManager.BLL.Interfaces;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
@@ -13,7 +14,7 @@ namespace KoncertManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VenuesController : ControllerBase
+    public class VenuesController : ODataController
     {
         private readonly IVenueService _venueService;
         private readonly IMapper _mapper;
@@ -25,19 +26,22 @@ namespace KoncertManager.API.Controllers
         }
 
         // GET: api/Venues
+        [EnableQuery]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Venue>>> GetAsync()
+        public async Task<ActionResult<IQueryable<Venue>>> GetAsync()
         {
-            //Lekérjük a listát, és a DAL elemekből DTO-t csinálunk
-            return _mapper.Map<List<Venue>>(await _venueService.GetVenuesAsync());
+            //Lekérjük a listát, és a DAL elemekből DTO-t csinálunk, amiből pedig Queryable-t csinálunk az OData-hoz
+            return Ok(_mapper.Map<List<Venue>>(await _venueService.GetVenuesAsync()).AsQueryable());
         }
 
         // GET: api/Venues/5
-        [HttpGet("{id}", Name = "GetVenue")]
-        public async Task<ActionResult<Venue>> Get(int id)
+        [EnableQuery]
+        [HttpGet("{key}", Name = "GetVenue")]
+        public async Task<ActionResult<IQueryable<Venue>>> Get([FromODataUri] int key) //Nem lehet GetAsync a neve, létrehozáskor 500 lenne
         {
-            //Lekérjük az elemet, és a DAL elemből DTO-t csinálunk
-            return _mapper.Map<Venue>(await _venueService.GetVenueAsync(id));
+            //Lekérjük az elemet, és a DAL elemből DTO-t csinálunk, amiből pedig Queryable-t csinálunk az OData-hoz
+            var result = _mapper.Map<Venue>(await _venueService.GetVenueAsync(key)).ToQueryable();
+            return Ok(SingleResult.Create(result));
         }
 
         // POST: api/Venues
@@ -55,21 +59,21 @@ namespace KoncertManager.API.Controllers
         }
 
         // PUT: api/Venues/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult> PutAsync(int id, [FromBody] Venue venue)
+        [HttpPut("{key}")]
+        public async Task<ActionResult> PutAsync([FromODataUri] int key, [FromBody] Venue venue)
         {
             //Frissítjük az adott ID-jű elemet a kapott elem szerint
-            await _venueService.UpdateVenueAsync(id, _mapper.Map<DAL.Entities.Venue>(venue));
+            await _venueService.UpdateVenueAsync(key, _mapper.Map<DAL.Entities.Venue>(venue));
             return NoContent();
 
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteAsync(int id)
+        [HttpDelete("{key}")]
+        public async Task<ActionResult> DeleteAsync([FromODataUri] int key)
         {
             //Töröljük az adott ID-jű elemet
-            await _venueService.DeleteVenueAsync(id);
+            await _venueService.DeleteVenueAsync(key);
             return NoContent();
         }
     }

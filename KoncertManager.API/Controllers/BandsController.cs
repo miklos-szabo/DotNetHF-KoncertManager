@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using KoncertManager.BLL.DTOs;
 using KoncertManager.BLL.Interfaces;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,7 @@ namespace KoncertManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BandsController : ControllerBase
+    public class BandsController : ODataController
     {
         private readonly IBandService _bandService;
         private readonly IMapper _mapper;
@@ -24,19 +25,22 @@ namespace KoncertManager.API.Controllers
         }
 
         // GET: api/Bands
+        [EnableQuery]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Band>>> GetAsync()
+        public async Task<ActionResult<IQueryable<Band>>> GetAsync()
         {
-            //Lekérjük a listát, és a DAL elemekből DTO-t csinálunk
-            return _mapper.Map<List<Band>>(await _bandService.GetBandsAsync());
+            //Lekérjük a listát, és a DAL elemekből DTO-t csinálunk, amiből pedig Queryable-t csinálunk az OData-hoz
+            return Ok(_mapper.Map<List<Band>>(await _bandService.GetBandsAsync()).AsQueryable());
         }
 
         // GET: api/Bands/5
-        [HttpGet("{id}", Name = "GetBand")]
-        public async Task<Band> Get(int id)
+        [EnableQuery]
+        [HttpGet("{key}", Name = "GetBand")]
+        public async Task<ActionResult<IQueryable<Band>>> Get([FromODataUri] int key) //Nem lehet GetAsync a neve, létrehozáskor 500 lenne
         {
-            //Lekérjük az elemet, és a DAL elemből DTO-t csinálunk
-            return _mapper.Map<Band>(await _bandService.GetBandAsync(id));
+            //Lekérjük az elemet, és a DAL elemből DTO-t csinálunk, amiből pedig Queryable-t csinálunk az OData-hoz
+            var result = _mapper.Map<Band>(await _bandService.GetBandAsync(key)).ToQueryable();
+            return Ok(SingleResult.Create(result));
         }
 
         // POST: api/Bands
@@ -54,20 +58,20 @@ namespace KoncertManager.API.Controllers
         }
 
         // PUT: api/Bands/5
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] Band band)
+        [HttpPut("{key}")]
+        public async Task<IActionResult> PutAsync([FromODataUri] int key, [FromBody] Band band)
         {
             //Frissítjük az adott ID-jű elemet a kapott elem szerint
-            await _bandService.UpdateBandAsync(id, _mapper.Map<DAL.Entities.Band>(band));
+            await _bandService.UpdateBandAsync(key, _mapper.Map<DAL.Entities.Band>(band));
             return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        [HttpDelete("{key}")]
+        public async Task<IActionResult> DeleteAsync([FromODataUri] int key)
         {
             //Töröljük az adott ID-jű elemet
-            await _bandService.DeleteBandAsync(id);
+            await _bandService.DeleteBandAsync(key);
             return NoContent();
         }
     }

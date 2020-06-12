@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Hellang.Middleware.ProblemDetails;
 using KoncertManager.BLL;
+using KoncertManager.BLL.DTOs;
 using KoncertManager.BLL.Interfaces;
 using KoncertManager.BLL.Services;
 using KoncertManager.BLL.Exceptions;
@@ -17,6 +18,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using KoncertManager.DAL;
+using Microsoft.AspNet.OData.Builder;
+using Microsoft.AspNet.OData.Extensions;
 using Microsoft.AspNetCore.Http;
 
 namespace KoncertManager.API
@@ -33,12 +36,12 @@ namespace KoncertManager.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(mvcOptions => mvcOptions.EnableEndpointRouting = false);
 
             //A string az appsettings.Development.json fájlban van
             services.AddDbContextPool<ConcertManagerContext>(o =>
                 //o.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));    //LocalDB
-                o.UseMySql(Configuration["ConnectionStrings:MySqlConnString"]));            
+                o.UseMySql(Configuration["ConnectionStrings:MySqlConnString"]));            //MySQL
 
             //A Startup osztályunk szerelvényében keresi a profilt a mapperhez
             services.AddAutoMapper(typeof(Startup));
@@ -59,6 +62,8 @@ namespace KoncertManager.API
                     return pd;
                 });
             });
+
+            services.AddOData();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -70,10 +75,19 @@ namespace KoncertManager.API
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
+            var builder = new ODataConventionModelBuilder(app.ApplicationServices);
+            builder.EntitySet<Band>("Bands");
+            builder.EntitySet<Venue>("Venues");
+            builder.EntitySet<Concert>("Concerts");
+            app.UseOData("ODataRoute", null, builder.GetEdmModel());
+
+
+            /*app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });
+            });*/
         }
+
+
     }
 }

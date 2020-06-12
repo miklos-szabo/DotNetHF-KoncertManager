@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using KoncertManager.BLL.DTOs;
 using KoncertManager.BLL.Interfaces;
+using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,7 +13,7 @@ namespace KoncertManager.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ConcertsController : ControllerBase
+    public class ConcertsController : ODataController
     {
         private readonly IConcertService _concertService;
         private readonly IMapper _mapper;
@@ -24,19 +25,22 @@ namespace KoncertManager.API.Controllers
         }
 
         // GET: api/Concerts
+        [EnableQuery]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Concert>>> GetAsync()
+        public async Task<ActionResult<IQueryable<Concert>>> GetAsync()
         {
-            //Lekérjük a listát, és a DAL elemekből DTO-t csinálunk
-            return _mapper.Map<List<Concert>>(await _concertService.GetConcertsAsync());
+            //Lekérjük a listát, és a DAL elemekből DTO-t csinálunk, amiből pedig Queryable-t csinálunk az OData-hoz
+            return Ok(_mapper.Map<List<Concert>>(await _concertService.GetConcertsAsync()).AsQueryable());
         }
 
         // GET: api/Concerts/5
-        [HttpGet("{id}", Name = "GetConcert")]
-        public async Task<ActionResult<Concert>> Get(int id)    //Nem lehet GetAsync a neve, létrehozáskor 500 lenne
+        [EnableQuery]
+        [HttpGet("{key}", Name = "GetConcert")]
+        public async Task<ActionResult<IQueryable<Concert>>> Get([FromODataUri] int key)    //Nem lehet GetAsync a neve, létrehozáskor 500 lenne
         {
-            //Lekérjük az elemet, és a DAL elemből DTO-t csinálunk
-            return _mapper.Map<Concert>(await _concertService.GetConcertAsync(id));
+            //Lekérjük az elemet, és a DAL elemből DTO-t csinálunk, amiből pedig Queryable-t csinálunk az OData-hoz
+            var result = _mapper.Map<Concert>(await _concertService.GetConcertAsync(key)).ToQueryable();
+            return Ok(SingleResult.Create(result));
         }
 
         // POST: api/Concerts
@@ -55,20 +59,20 @@ namespace KoncertManager.API.Controllers
         }
 
         // PUT: api/Concerts/5
-        [HttpPut("{id}")]
-        public async Task<ActionResult> PutAsync(int id, [FromBody] Concert concert)
+        [HttpPut("{key}")]
+        public async Task<ActionResult> PutAsync([FromODataUri] int key, [FromBody] Concert concert)
         {
             //Frissítjük az adott ID-jű elemet a kapott elem szerint
-            await _concertService.UpdateConcertAsync(id, _mapper.Map<DAL.Entities.Concert>(concert),
+            await _concertService.UpdateConcertAsync(key, _mapper.Map<DAL.Entities.Concert>(concert),
                 _mapper.Map<List<DAL.Entities.Band>>(concert.Bands));
             return NoContent();
         }
 
         // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete("{key}")]
+        public async Task<ActionResult> Delete([FromODataUri] int key)
         {
-            await _concertService.DeleteConcertAsync(id);
+            await _concertService.DeleteConcertAsync(key);
             return NoContent();
         }
     }

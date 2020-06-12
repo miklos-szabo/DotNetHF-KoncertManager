@@ -23,8 +23,9 @@ namespace WPFClient
          */
         public static async Task<List<Band>> GetBandsAsync()
         {
-            string responseString = await client.GetStringAsync("http://localhost:53501/api/bands");
-            return JsonConvert.DeserializeObject<List<Band>>(responseString);
+            string responseString = await client.GetStringAsync("http://localhost:53501/bands");
+            //ODataResponse egy alább levő internal osztály
+            return JsonConvert.DeserializeObject<ODataResponse<Band>>(responseString).Values;
         }
 
         /**
@@ -32,8 +33,8 @@ namespace WPFClient
          */
         public static async Task<List<Venue>> GetVenuesAsync()
         {
-            string responseString = await client.GetStringAsync("http://localhost:53501/api/venues");
-            return JsonConvert.DeserializeObject<List<Venue>>(responseString);
+            string responseString = await client.GetStringAsync("http://localhost:53501/venues");
+            return JsonConvert.DeserializeObject<ODataResponse<Venue>>(responseString).Values;
         }
 
         /**
@@ -41,8 +42,9 @@ namespace WPFClient
          */
         public static async Task<List<Concert>> GetConcertsAsync()
         {
-            string responseString = await client.GetStringAsync("http://localhost:53501/api/concerts");
-            return JsonConvert.DeserializeObject<List<Concert>>(responseString);
+            //Az expand fontos, anélkül nem küldi el az együtteseket
+            string responseString = await client.GetStringAsync("http://localhost:53501/concerts?$expand=bands");
+            return JsonConvert.DeserializeObject<ODataResponse<Concert>>(responseString).Values;
         }
 
         /**
@@ -51,7 +53,7 @@ namespace WPFClient
         public static async Task<bool> CreateBandAsync(Band band)
         {
             var jstr = JsonConvert.SerializeObject(band);
-            var response = await client.PostAsync("http://localhost:53501/api/bands",
+            var response = await client.PostAsync("http://localhost:53501/bands",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
             return response.StatusCode == HttpStatusCode.Created;
         }
@@ -62,7 +64,7 @@ namespace WPFClient
         public static async Task<bool> CreateVenueAsync(Venue venue)
         {
             var jstr = JsonConvert.SerializeObject(venue);
-            var response = await client.PostAsync("http://localhost:53501/api/venues",
+            var response = await client.PostAsync("http://localhost:53501/venues",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
             return response.StatusCode == HttpStatusCode.Created;
         }
@@ -73,7 +75,7 @@ namespace WPFClient
         public static async Task<bool> CreateConcertAsync(Concert concert)
         {
             var jstr = JsonConvert.SerializeObject(concert);
-            var response = await client.PostAsync("http://localhost:53501/api/concerts",
+            var response = await client.PostAsync("http://localhost:53501/concerts",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
             return response.StatusCode == HttpStatusCode.Created;
         }
@@ -83,7 +85,7 @@ namespace WPFClient
          */
         public static async Task<bool> DeleteBandAsync(int id)
         {
-            var response = await client.DeleteAsync($"http://localhost:53501/api/bands/{id}");
+            var response = await client.DeleteAsync($"http://localhost:53501/bands/{id}");
             return response.StatusCode == HttpStatusCode.NoContent;
         }
 
@@ -92,7 +94,7 @@ namespace WPFClient
          */
         public static async Task<bool> DeleteVenueAsync(int id)
         {
-            var response = await client.DeleteAsync($"http://localhost:53501/api/venues/{id}");
+            var response = await client.DeleteAsync($"http://localhost:53501/venues/{id}");
             return response.StatusCode == HttpStatusCode.NoContent;
         }
 
@@ -101,7 +103,7 @@ namespace WPFClient
          */
         public static async Task<bool> DeleteConcertAsync(int id)
         {
-            var response = await client.DeleteAsync($"http://localhost:53501/api/concerts/{id}");
+            var response = await client.DeleteAsync($"http://localhost:53501/concerts/{id}");
             return response.StatusCode == HttpStatusCode.NoContent;
         }
 
@@ -112,7 +114,7 @@ namespace WPFClient
         public static async Task<bool> UpdateBandAsync(int id, Band band)
         {
             var jstr = JsonConvert.SerializeObject(band);
-            var response = await client.PutAsync($"http://localhost:53501/api/bands/{id}",
+            var response = await client.PutAsync($"http://localhost:53501/bands/{id}",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
             return response.StatusCode == HttpStatusCode.NoContent;
         }
@@ -124,7 +126,7 @@ namespace WPFClient
         public static async Task<bool> UpdateVenueAsync(int id, Venue venue)
         {
             var jstr = JsonConvert.SerializeObject(venue);
-            var response = await client.PutAsync($"http://localhost:53501/api/venues/{id}",
+            var response = await client.PutAsync($"http://localhost:53501/venues/{id}",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
             return response.StatusCode == HttpStatusCode.NoContent;
         }
@@ -136,9 +138,20 @@ namespace WPFClient
         public static async Task<bool> UpdateConcertAsync(int id, Concert concert)
         {
             var jstr = JsonConvert.SerializeObject(concert);
-            var response = await client.PutAsync($"http://localhost:53501/api/concerts/{id}",
+            var response = await client.PutAsync($"http://localhost:53501/concerts/{id}",
                 new StringContent(jstr, Encoding.UTF8, "application/json"));
             return response.StatusCode == HttpStatusCode.NoContent;
+        }
+
+        /**
+         * A kapott OData json válaszban az első elem a metadata, a második elem pedig a keresett értékek
+         */
+        internal class ODataResponse<T>
+        {
+            [JsonProperty("odata.context")]
+            public string MetaData { get; set; }
+            [JsonProperty("value")]
+            public List<T> Values { get; set; }
         }
     }
 }

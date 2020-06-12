@@ -48,7 +48,7 @@ namespace WPFClient
             await GetBands();   //Be kell tölteni az együtteseket és a helyszíneket is, mert ha koncertet 
             await GetVenues();      //szerkesztünk, a kiválasztásokhoz kell mindegyik elem
             await GetConcerts();
-            SortLists();
+            //SortLists();
 
             CurrentView = typeof(Concert);
             SetListSource();
