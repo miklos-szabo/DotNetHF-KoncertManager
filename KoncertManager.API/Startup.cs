@@ -36,8 +36,9 @@ namespace KoncertManager.API
             services.AddControllers();
 
             //A string az appsettings.Development.json fájlban van
-            services.AddDbContext<ConcertManagerContext>(o =>
-                o.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));
+            services.AddDbContextPool<ConcertManagerContext>(o =>
+                //o.UseSqlServer(Configuration["ConnectionStrings:DefaultConnection"]));    //LocalDB
+                o.UseMySql(Configuration["ConnectionStrings:MySqlConnString"]));            
 
             //A Startup osztályunk szerelvényében keresi a profilt a mapperhez
             services.AddAutoMapper(typeof(Startup));

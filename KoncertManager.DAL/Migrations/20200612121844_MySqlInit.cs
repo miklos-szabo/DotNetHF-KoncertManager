@@ -1,9 +1,10 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace KoncertManager.DAL.Migrations
 {
-    public partial class Init : Migration
+    public partial class MySqlInit : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +13,7 @@ namespace KoncertManager.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false),
                     FormedIn = table.Column<int>(nullable: false),
                     Country = table.Column<string>(nullable: true)
@@ -27,7 +28,7 @@ namespace KoncertManager.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false),
                     Address = table.Column<string>(nullable: true),
                     Capacity = table.Column<int>(nullable: false)
@@ -42,7 +43,7 @@ namespace KoncertManager.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Date = table.Column<DateTime>(nullable: false),
                     TicketsAvailable = table.Column<bool>(nullable: false),
                     VenueId = table.Column<int>(nullable: false)
@@ -63,7 +64,7 @@ namespace KoncertManager.DAL.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     ConcertId = table.Column<int>(nullable: false),
                     BandId = table.Column<int>(nullable: false)
                 },
