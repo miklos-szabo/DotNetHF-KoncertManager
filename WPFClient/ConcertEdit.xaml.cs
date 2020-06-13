@@ -87,13 +87,15 @@ namespace WPFClient
         {
             if (!(cbVenue.SelectedItem is Venue venue)) return;
 
+            if (datePicker.SelectedDate == null) return;
             Concert concert = new Concert
             {
                 Bands = GetListOfBands(),
-                Date = datePicker.DisplayDate,
+                Date = datePicker.SelectedDate.Value,
                 TicketsAvailable = cbTickets.SelectedItem == cbTickets.Items.GetItemAt(0),
                 VenueId = venue.Id
             };
+            concert.Date = concert.Date.ToLocalTime();
 
             var window = (MainWindow)Window.GetWindow(this);
 

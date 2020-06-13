@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WPFClient"
         xmlns:dtOs="clr-namespace:KoncertManager.BLL.DTOs;assembly=KoncertManager.BLL"
         mc:Ignorable="d"
-        Title="MainWindow" Height="453.766" Width="959.941">
+        Title="MainWindow" Height="455.266" Width="1034.941">
     <Window.Resources>
         <local:BandsConverter x:Key="BandsConverter"></local:BandsConverter>
         <local:TicketsConverter x:Key="TicketsConverter"></local:TicketsConverter>
@@ -14,18 +14,20 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="180"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="716*"></ColumnDefinition>
+            <ColumnDefinition Width="16*"/>
+            <ColumnDefinition Width="67*"/>
         </Grid.ColumnDefinitions>
 
         <Button x:Name="buttonBands" Content="Bands" HorizontalAlignment="Left" Margin="62,99,0,0" VerticalAlignment="Top" Width="75" Click="buttonBands_Click" HorizontalContentAlignment="Center"/>
         <Button x:Name="buttonVenues" Content="Venues" HorizontalAlignment="Left" Margin="62,143,0,0" VerticalAlignment="Top" Width="75" Click="buttonVenues_Click" HorizontalContentAlignment="Center"/>
         <Button x:Name="buttonConcerts" Content="Concerts" HorizontalAlignment="Left" Margin="62,188,0,0" VerticalAlignment="Top" Width="75" Click="buttonConcerts_Click" HorizontalContentAlignment="Center"/>
 
-        <Button x:Name="buttonCreateNew" Content="Create New" HorizontalAlignment="Left" Margin="680,104,0,0" VerticalAlignment="Top" Width="75" Click="buttonCreateNew_Click" Grid.Column="1"/>
-        <Button x:Name="buttonEdit" Content="Edit" HorizontalAlignment="Left" Margin="680,143,0,0" VerticalAlignment="Top" Width="75" Click="buttonEdit_Click" Grid.Column="1"/>
-        <Button x:Name="buttonDelete" Content="Delete" HorizontalAlignment="Left" Margin="680,183,0,0" VerticalAlignment="Top" Width="75" Click="buttonDelete_Click" Grid.Column="1"/>
-        <Button x:Name="buttonSort" Content="Sort" Grid.Column="1" HorizontalAlignment="Left" Margin="680,222,0,0" VerticalAlignment="Top" Width="75" Click="buttonSort_Click"/>
-        <StackPanel Grid.Column="1" Margin="0,0,97,0">
+        <Button x:Name="buttonCreateNew" Content="Create New" HorizontalAlignment="Left" Margin="680,104,0,0" VerticalAlignment="Top" Width="75" Click="buttonCreateNew_Click" Grid.Column="1" Grid.ColumnSpan="3"/>
+        <Button x:Name="buttonEdit" Content="Edit" HorizontalAlignment="Left" Margin="680,143,0,0" VerticalAlignment="Top" Width="75" Click="buttonEdit_Click" Grid.Column="1" Grid.ColumnSpan="3"/>
+        <Button x:Name="buttonDelete" Content="Delete" HorizontalAlignment="Left" Margin="680,183,0,0" VerticalAlignment="Top" Width="75" Click="buttonDelete_Click" Grid.Column="1" Grid.ColumnSpan="3"/>
+        <Button x:Name="buttonSort" Content="Sort" Grid.Column="1" HorizontalAlignment="Left" Margin="680,222,0,0" VerticalAlignment="Top" Width="75" Click="buttonSort_Click" Grid.ColumnSpan="3"/>
+        <StackPanel Grid.Column="1" Margin="0,0,14,0">
             <TextBlock Name="tbStatus" FontSize="24" HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold"></TextBlock>
             <ListBox x:Name="lbOutput" HorizontalAlignment="Left" Height="350" Margin="10,10,0,0" VerticalAlignment="Top" Width="655">
                 <ListBox.Resources>
@@ -83,6 +85,8 @@
             </ListBox>
             <ContentControl x:Name="mainControl" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="362" Width="485" Grid.Column="1"/>
         </StackPanel>
+        <TextBox x:Name="tbSearch" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="679,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="3"/>
+        <Button x:Name="SearchButton" Grid.ColumnSpan="2" Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="700,291,0,0" VerticalAlignment="Top" Width="76" Click="SearchButton_Click"/>
 
     </Grid>
 </Window>

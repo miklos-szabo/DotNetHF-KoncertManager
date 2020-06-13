@@ -144,6 +144,34 @@ namespace WPFClient
         }
 
         /**
+         * OData alapú kereséssel szűrésre
+         */
+        public static async Task<List<Band>> GetFilteredBands(string filter)
+        {
+            string responseString = await client.GetStringAsync($"http://localhost:53501/bands?${filter}");
+            return JsonConvert.DeserializeObject<ODataResponse<Band>>(responseString).Values;
+        }
+
+        /**
+         * OData alapú kereséssel szűrésre
+         */
+        public static async Task<List<Venue>> GetFilteredVenues(string filter)
+        {
+            string responseString = await client.GetStringAsync("http://localhost:53501/venues?${filter}");
+            return JsonConvert.DeserializeObject<ODataResponse<Venue>>(responseString).Values;
+        }
+
+        /**
+         * OData alapú kereséssel szűrésre
+         */
+        public static async Task<List<Concert>> GetFilteredConcerts(string filter)
+        {
+            //Az expand fontos, anélkül nem küldi el az együtteseket
+            string responseString = await client.GetStringAsync($"http://localhost:53501/concerts?$expand=bands,venue&?{filter}");
+            return JsonConvert.DeserializeObject<ODataResponse<Concert>>(responseString).Values;
+        }
+
+        /**
          * A kapott OData json válaszban az első elem a metadata, a második elem pedig a keresett értékek
          */
         internal class ODataResponse<T>

@@ -311,5 +311,18 @@ namespace WPFClient
             SortLists();
             SetListSource();
         }
+
+        private async void SearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (tbSearch.Text == string.Empty) return;
+
+            if (CurrentView == typeof(Band))
+                Bands = await Communication.GetFilteredBands($"filter=contains(Name,'{tbSearch.Text}')");
+            else if (CurrentView == typeof(Venue))
+                Venues = await Communication.GetFilteredVenues($"filter=contains(Name,'{tbSearch.Text}')"); //TODO
+            else if (CurrentView == typeof(Concert))
+                Concerts = await Communication.GetFilteredConcerts($"filter="); //TODO
+            SetListSource();
+        }
     }
 }
