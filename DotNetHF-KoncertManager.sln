@@ -14,6 +14,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KoncertManager.BLL", "Konce
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KoncertManager.DAL", "KoncertManager.DAL\KoncertManager.DAL.csproj", "{BF30E081-9F45-4707-A9BE-C2D58413465F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{2AF1A001-5A02-4F7C-835C-756A97B8EEC2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D1764017-FE6D-4E2C-B7FB-DD39E7ECD7C5} = {D1764017-FE6D-4E2C-B7FB-DD39E7ECD7C5}
+		{BF30E081-9F45-4707-A9BE-C2D58413465F} = {BF30E081-9F45-4707-A9BE-C2D58413465F}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +42,10 @@ Global
 		{BF30E081-9F45-4707-A9BE-C2D58413465F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF30E081-9F45-4707-A9BE-C2D58413465F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF30E081-9F45-4707-A9BE-C2D58413465F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AF1A001-5A02-4F7C-835C-756A97B8EEC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AF1A001-5A02-4F7C-835C-756A97B8EEC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AF1A001-5A02-4F7C-835C-756A97B8EEC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AF1A001-5A02-4F7C-835C-756A97B8EEC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

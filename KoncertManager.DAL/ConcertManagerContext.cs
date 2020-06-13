@@ -31,7 +31,8 @@ namespace KoncertManager.DAL
                 new Band {Id = 3, Name = "Hammerfall", FormedIn = 1993, Country = "Svédország"},
                 new Band {Id = 4, Name = "Powerwolf", FormedIn = 2003, Country = "Németország"},
                 new Band {Id = 5, Name = "Nightwish", FormedIn = 1996, Country = "Finnország"},
-                new Band {Id = 6, Name = "Depresszió", FormedIn = 1999, Country = "Magyarország"}
+                new Band {Id = 6, Name = "Depresszió", FormedIn = 1999, Country = "Magyarország"},
+                new Band {Id = 7, Name = "UnitTest", FormedIn = 2020, Country = "Magyarország"}
             });
 
             //Törléskor írjon null-okat azokhoz a koncertekhez
@@ -63,8 +64,13 @@ namespace KoncertManager.DAL
                 },
                 new Venue
                 {
-                    Id = 4, Name = "A38 hajó",
+                    Id = 4, Name = "A38 Hajó",
                     Address = "1117 Budapest, Petőfi híd", Capacity = 600
+                },
+                new Venue
+                {
+                    Id = 5, Name = "UnitTest",
+                    Address = "Rider", Capacity = 1000
                 }
             });
 
