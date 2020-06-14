@@ -219,7 +219,9 @@ namespace WPFClient
          */
         public async Task GetConcerts()
         {
-            Concerts = await Communication.GetConcertsAsync();
+            var concerts = await Communication.GetConcertsAsync();
+            Concerts = concerts.Where(c => c.Date >= DateTime.Today).OrderBy(c => c.Date).ToList();
+
         }
 
         /**
@@ -321,7 +323,7 @@ namespace WPFClient
             else if (CurrentView == typeof(Venue))
                 Venues = await Communication.GetFilteredVenues($"filter=contains(Name,'{tbSearch.Text}')"); //TODO
             else if (CurrentView == typeof(Concert))
-                Concerts = await Communication.GetFilteredConcerts($"filter="); //TODO
+                Concerts = Concerts.Where(c => c.Bands.Any(b => b.Name.Contains(tbSearch.Text))).ToList();
             SetListSource();
         }
     }
