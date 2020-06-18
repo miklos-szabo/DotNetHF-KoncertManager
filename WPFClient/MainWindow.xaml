@@ -84,9 +84,13 @@
                 </ListBox.Resources>
             </ListBox>
             <ContentControl x:Name="mainControl" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="362" Width="485" Grid.Column="1"/>
+            <TextBox Height="23" TextWrapping="Wrap" Text="TextBox"/>
         </StackPanel>
         <TextBox x:Name="tbSearch" Grid.Column="1" HorizontalAlignment="Left" Height="24" Margin="679,262,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.ColumnSpan="3"/>
         <Button x:Name="SearchButton" Grid.ColumnSpan="2" Content="Search" Grid.Column="1" HorizontalAlignment="Left" Margin="700,291,0,0" VerticalAlignment="Top" Width="76" Click="SearchButton_Click"/>
+        <Button x:Name="SignInButton" Content="Sign In" Grid.Column="1" HorizontalAlignment="Left" Margin="674,316,0,0" VerticalAlignment="Top" Width="75" Click="SignInButton_Click"/>
+        <Button x:Name="SignOutButton" Content="Sign Out" Grid.Column="2" HorizontalAlignment="Left" Margin="3,316,0,0" VerticalAlignment="Top" Width="75" Grid.ColumnSpan="2" Click="SignOutButton_Click" Visibility="Collapsed"/>
+        <TextBox x:Name="tbClientData" Grid.ColumnSpan="3" Grid.Column="1" HorizontalAlignment="Left" Height="73" Margin="674,341,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="163"/>
 
     </Grid>
 </Window>

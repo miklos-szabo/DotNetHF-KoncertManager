@@ -1,8 +1,10 @@
 ﻿using System;
 using System.CodeDom;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -10,13 +12,16 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using KoncertManager.BLL.DTOs;
+using Microsoft.Identity.Client;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace WPFClient
 {
@@ -326,5 +331,111 @@ namespace WPFClient
                 Concerts = Concerts.Where(c => c.Bands.Any(b => b.Name.Contains(tbSearch.Text))).ToList();
             SetListSource();
         }
+
+        #region Azure B2C
+
+        private async void SignInButton_Click(object sender, RoutedEventArgs e)
+        {
+            AuthenticationResult authResult = null;
+            var app = App.PublicClientApp;
+            try
+            {
+                tbClientData.Text = "";
+                authResult = await (app as PublicClientApplication).AcquireTokenInteractive(App.ApiScopes)
+                    .WithParentActivityOrWindow(new WindowInteropHelper(this).Handle)
+                    .ExecuteAsync();
+
+                DisplayUserInfo(authResult);
+                UpdateSignInState(true);
+            }
+            catch (MsalException ex)
+            {
+                try
+                {
+                    if (ex.Message.Contains("AADB2C90118"))
+                    {
+                        authResult = await (app as PublicClientApplication).AcquireTokenInteractive(App.ApiScopes)
+                            .WithParentActivityOrWindow(new WindowInteropHelper(this).Handle)
+                            .WithPrompt(Prompt.SelectAccount)
+                            .WithB2CAuthority(App.AuthorityResetPassword)
+                            .ExecuteAsync();
+                    }
+                    else
+                    {
+                    }
+                }
+                catch (Exception exe)
+                {
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+
+
+        private async void SignOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            IEnumerable<IAccount> accounts = await App.PublicClientApp.GetAccountsAsync();
+            try
+            {
+                while (accounts.Any())
+                {
+                    await App.PublicClientApp.RemoveAsync(accounts.FirstOrDefault());
+                    accounts = await App.PublicClientApp.GetAccountsAsync();
+                }
+
+                UpdateSignInState(false);
+            }
+            catch (MsalException ex)
+            {
+            }
+        }
+
+
+        private void UpdateSignInState(bool signedIn)
+        {
+            if (signedIn)
+            {
+                SignOutButton.Visibility = Visibility.Visible;
+                SignInButton.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                SignOutButton.Visibility = Visibility.Collapsed;
+                SignInButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void DisplayUserInfo(AuthenticationResult authResult)
+        {
+            tbClientData.Text = "";
+            if (authResult != null)
+            {
+                JObject user = ParseIdToken(authResult.IdToken);
+
+                tbClientData.Text += $"Welcome, {user["given_name"]}" + Environment.NewLine;
+            }
+        }
+
+        JObject ParseIdToken(string idToken)
+        {
+            // Parse the idToken to get user info
+            idToken = idToken.Split('.')[1];
+            idToken = Base64UrlDecode(idToken);
+            return JObject.Parse(idToken);
+        }
+
+        private string Base64UrlDecode(string s)
+        {
+            s = s.Replace('-', '+').Replace('_', '/');
+            s = s.PadRight(s.Length + (4 - s.Length % 4) % 4, '=');
+            var byteArray = Convert.FromBase64String(s);
+            var decoded = Encoding.UTF8.GetString(byteArray, 0, byteArray.Count());
+            return decoded;
+        }
+
+        #endregion
+
     }
 }
