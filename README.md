@@ -22,11 +22,8 @@ leírt, MySql adatbázison.
 
 ## Pontozás a feladat értékeléséhez
 * OData szolgáltatás megvalósítása Microsoft.AspNetCore.OData csomaggal, Odata v4 alapon, lekérdezés, létrehozás, módosítás, törlés is - 10 pont
+* Szerver oldali autentikáció + Google külső provider - 13 pont
 * MySql adatbázis használata LocalDB helyett EFCore-al - 10 pont
 * Adatbetöltés (seeding) migráció segítségével (HasData) - 3 pont
-* Kifejezésfa (ExpressionTree) értelmezése és manipulálása, kapcsolódó kollekcióban dinamikusan - 10 pont
 * Unit tesztek 15 függvényhez, In-Memory SQLite adatbázissal - 11 pont
 * ObjectMapper használata DTO-k létrehozására - AutoMapper - 3 pont
-* Külső könyvtárak használata - 7 pont
-  * Pomelo.EntityFrameWorkCore.MySql
-  * XUnit
