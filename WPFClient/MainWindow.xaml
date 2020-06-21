@@ -28,7 +28,7 @@
         <Button x:Name="buttonDelete" Content="Delete" HorizontalAlignment="Left" Margin="680,183,0,0" VerticalAlignment="Top" Width="75" Click="buttonDelete_Click" Grid.Column="1" Grid.ColumnSpan="3"/>
         <Button x:Name="buttonSort" Content="Sort" Grid.Column="1" HorizontalAlignment="Left" Margin="680,222,0,0" VerticalAlignment="Top" Width="75" Click="buttonSort_Click" Grid.ColumnSpan="3"/>
         <StackPanel Grid.Column="1" Margin="0,0,14,0">
-            <TextBlock Name="tbStatus" FontSize="24" HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold"></TextBlock>
+            <TextBlock Name="tbStatus" FontSize="24" HorizontalAlignment="Center" Margin="0,20,0,0" FontWeight="Bold">Sign In!</TextBlock>
             <ListBox x:Name="lbOutput" HorizontalAlignment="Left" Height="350" Margin="10,10,0,0" VerticalAlignment="Top" Width="655">
                 <ListBox.Resources>
                     <DataTemplate DataType="{x:Type dtOs:Band}">

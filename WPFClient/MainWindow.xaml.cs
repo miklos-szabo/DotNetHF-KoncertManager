@@ -41,7 +41,7 @@ namespace WPFClient
             InitializeComponent();
             StatusTimer = new DispatcherTimer {Interval = TimeSpan.FromSeconds(3)};
             StatusTimer.Tick += statusTimer_tick;
-            AtStart();
+            //AtStart();
         }
 
         /**
@@ -347,6 +347,7 @@ namespace WPFClient
 
                 DisplayUserInfo(authResult);
                 UpdateSignInState(true);
+                AtStart();
             }
             catch (MsalException ex)
             {
